@@ -1,4 +1,5 @@
 const express = require('express')
+require('dotenv').config()
 const bodyParser=require('body-parser')
 require('../db/mongoose')
 const userRouter = require('../routes/user')

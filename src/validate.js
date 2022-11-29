@@ -2,23 +2,23 @@ const Joi=require('@hapi/joi')
 
 const loginValidation = (data) => {
  
-  var re = /^(?:\d{10}|\w+@\w+\.\w{2,3})$/;
   const schema=Joi.object(
     {
-    userID:Joi.string().pattern(re).min(10).required().messages({
-      "string.empty": `"userID" cannot be an empty field`,
-      "any.required": `"userID" is a required field`,
-      "string.base": `"userID" should be a type of 'text'`,
-    }),
-    password:Joi.string().min(7).required().messages({
-      "string.empty": `password cannot be an empty field`,
-      "any.required": `password is a required field`,
-      "string.min": `Please enter password with minimum length 7`,
-      "string.base": `password should be a type of 'text'`,
-    })
+      password:Joi.string().min(6).label('Password').required().messages({
+        "string.empty": `Password cannot be an empty field.`,
+        "any.required": `Please enter password.`,
+        "string.min": `Please enter a valid password with minimum length of 7.`,
+        "string.base": `Please enter a valid password password should be a type of 'text'.`,
+      }),
+      email:Joi.string().email().label('Email').required().messages({
+        "string.empty": `{{#label}} cannot be an empty field.`,
+        "any.required": `{{#label}} is a required field.`,
+        "string.email":`Please enter a valid {{#label}}.`
+
+      }),
 
     }
-).options({ abortEarly: false })
+).options({ abortEarly: false , errors :{wrap:{label:'``'}}})
 const validation = schema.validate(data);
 return validation;
   };
@@ -30,7 +30,7 @@ return validation;
     const schema=Joi.object(
       {
     
-      password:Joi.string().min(6).required().messages({
+      password:Joi.string().min(6).label('Password').required().messages({
         "string.empty": `Password cannot be an empty field.`,
         "any.required": `Please enter password.`,
         "string.min": `Please enter password with minimum length of 7.`,
