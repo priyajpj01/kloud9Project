@@ -1,0 +1,38 @@
+{
+  "name": "neosoftassignment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/priyajpj01/NeosoftAssignment.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/joi": "^17.1.1",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.16.4",
+    "fs": "0.0.1-security",
+    "jsonwebtoken": "^8.4.0",
+    "mongodb": "^3.1.10",
+    "mongoose": "^5.3.16",
+    "multer": "^1.4.5-lts.1",
+    "path": "^0.12.7",
+    "uuid": "^8.3.2",
+    "validator": "^10.9.0"
+  },
+  "bugs": {
+    "url": "https://github.com/priyajpj01/NeosoftAssignment/issues"
+  },
+  "homepage": "https://github.com/priyajpj01/NeosoftAssignment#readme"
+}
