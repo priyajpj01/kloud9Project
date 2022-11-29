@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const dotenv=require('dotenv')
+dotenv.config()
 // const Task = require('./task')
 
 const userSchema = new mongoose.Schema({
@@ -70,11 +72,10 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.generateAuthToken = async function () {
     const user = this
-    const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET)
-
+    console.log(process.env.JWT_SECRET)
+    const token = jwt.sign({ _id: user._id.toString() },"Mynewproject")
     user.tokens = user.tokens.concat({ token })
     await user.save()
-
     return token
 }
 
@@ -83,7 +84,6 @@ userSchema.methods.generateAuthToken = async function () {
 // Hash the plain text password before saving
 userSchema.pre('save', async function (next) {
     const user = this
-    console.log("pass hashed")
     if (user.isModified('password')) {
         user.password = await bcrypt.hash(user.password, 8)
     }

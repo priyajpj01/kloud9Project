@@ -1,5 +1,5 @@
 
-
+const bcrypt = require("bcryptjs");
 const User = require("../models/user");
 
 module.exports = {
@@ -12,11 +12,7 @@ throw new Error(` A user with email ${userData.email} already exists`)
             
             const user=new User(userData)
             await user.save()
-
-            console.log("User saved")
-            const token = await user.generateAuthToken()
-            console.log(user)
-            return {user,token}
+            return user
             
         } catch (e) {
             return(e)
@@ -25,16 +21,17 @@ throw new Error(` A user with email ${userData.email} already exists`)
 },
 
 findByCredentials : async (email, password) => {
+    
     const user = await User.findOne({ email })
 
     if (!user) {
-        throw new Error('Unable to login')
+        throw new Error('Unable to login, please signup')
     }
-
+    console.log(user)
     const isMatch = await bcrypt.compare(password, user.password)
-
+    console.log("matched")
     if (!isMatch) {
-        throw new Error('Unable to login')
+        throw new Error('Unable to login,Please enter valid password')
     }
 
     return user

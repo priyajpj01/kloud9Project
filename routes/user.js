@@ -1,20 +1,21 @@
 const express = require('express')
 const multer = require('multer')
 const jwt=require('jsonwebtoken')
+
 // const sharp = require('sharp')
-const bcrypt = require("bcryptjs");
+
 const auth = require('../middleware/auth')
 const userController=require('../controllers/userController.js')
 const router = new express.Router()
 
 // Load Input Validation
-const validateRegisterInput = require("../src/validate");
+const validateInput = require("../src/validate");
 
 // Load User model
 const User = require("../models/user");
 
 
-// @route   POST /createUser
+// @route   POST /users/signup
 // @desc    Register user
 // @access  Public
 //{
@@ -24,9 +25,9 @@ const User = require("../models/user");
 // "age":"xx"
 // }
 
-router.post('/createUser', async (req, res) => {
+router.post('/users/signup', async (req, res) => {
    
-    const response= validateRegisterInput.registerValidation(req.body);
+    const response= validateInput.registerValidation(req.body);
 
     //check Validation
     if(response.error)
@@ -37,21 +38,30 @@ router.post('/createUser', async (req, res) => {
         return res.status(400).json(res_arr)
     
     } 
-    // console.log(req.body)
-    // const user=new User(req.body)
-    // console.log(user)
-    // await user.save()
-    // console.log("user saved")
-    var result = await userController.createUsers(req.body)
-    res.status(201).send(result)
+
+    var user = await userController.createUsers(req.body)
+    console.log("User is "+ user)
+    const token = await user.generateAuthToken()
+    res.status(201).send({message: 'User created sucessfully',user:user,token:token})
 
    
 })
 
-router.post('/users/login', auth,async (req, res) => {
+router.post('/users/login',auth,async (req, res) => {
+
+    const response= validateInput.loginValidation(req.body);
+    //check Validation
+    if(response.error)
+    {
+    var res_arr=[]
+    response.error.details.map((error)=>
+    { res_arr.push(error.message) })
+        return res.status(400).json(res_arr)
+    
+    } 
     try {
         const user = await userController.findByCredentials(req.body.email, req.body.password)
-        res.send({ user })
+        res.status(201).send({ message: 'Logged in sucessfully' , user:user})
     } catch (e) {
         res.status(400).send()
     }
@@ -70,31 +80,41 @@ router.post('/users/logout', auth, async (req, res) => {
     }
 })
 
-router.patch('/users/me', auth, async (req, res) => {
+router.patch('/users/update', auth, async (req, res) => {
+    var failedUpdates=[]
     const updates = Object.keys(req.body)
     const allowedUpdates = ['name', 'email', 'password', 'age']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
 
     if (!isValidOperation) {
-        return res.status(400).send({ error: 'Invalid updates!' })
+        return res.status(400).send({ error: 'Please provide valid updates!' })
     }
 
     try {
-        updates.forEach((update) => req.user[update] = req.body[update])
+        updates.forEach((update) => 
+        {
+            // Check for duplicate update
+            if(req.user[update] !=req.body[update])
+               req.user[update] = req.body[update]
+            else
+            failedUpdates.push(update)
+        })
+        if(failedUpdates.length!=0)
+        return res.status(400).send({ error: 'Please provide different valuesvalues provided are duplicate, ', values:failedUpdates })
         await req.user.save()
-        res.send(req.user)
+        res.status(201).send({message:"User successfully updated",user:req.user})
     } catch (e) {
         res.status(400).send(e)
     }
 })
 
-router.delete('/deleteUser', auth, async (req, res) => {
+router.delete('/users/delete', auth, async (req, res) => {
     try {
         await req.user.remove()
-        sendCancelationEmail(req.user.email, req.user.name)
-        res.send(req.user)
+        // sendCancelationEmail(req.user.email, req.user.name)
+        res.status(201).send({message:"User account deleted",uesr:req.user})
     } catch (e) {
-        res.status(500).send()
+        res.status(500).send({error:e.message})
     }
 })
 
