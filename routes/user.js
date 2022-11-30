@@ -1,9 +1,4 @@
 const express = require('express')
-const multer = require('multer')
-const jwt=require('jsonwebtoken')
-
-// const sharp = require('sharp')
-
 const auth = require('../middleware/auth')
 const userController=require('../controllers/userController.js')
 const router = new express.Router()
@@ -39,10 +34,19 @@ router.post('/users/signup', async (req, res) => {
     
     } 
 
-    var user = await userController.createUsers(req.body)
-    console.log("User is "+ user)
-    const token = await user.generateAuthToken()
-    res.status(201).send({message: 'User created sucessfully',user:user,token:token})
+
+    try
+    {
+        var user = await userController.createUsers(req.body)
+        console.log("User is "+ user)
+        const token = await user.generateAuthToken()
+        
+        res.status(201).send({message: 'User created sucessfully',user:user,token:token})
+    }catch(e)
+    {
+        res.status(400).send(e.message)
+    }
+    
 
    
 })
@@ -63,7 +67,7 @@ router.post('/users/login',auth,async (req, res) => {
         const user = await userController.findByCredentials(req.body.email, req.body.password)
         res.status(201).send({ message: 'Logged in sucessfully' , user:user})
     } catch (e) {
-        res.status(400).send()
+        res.status(400).send(e.message)
     }
 })
 
