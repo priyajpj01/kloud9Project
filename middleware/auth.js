@@ -1,13 +1,12 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
-require('dotenv').config();
+const config=require('../helper/config')
 
 // middleware to verify user using jwt
 const auth = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '')
-        console.log(token)
-        const decoded = jwt.verify(token, "Mynewproject")
+        const decoded = jwt.verify(token, config.secretKey)
         const user = await User.findOne({ _id: decoded._id})
 
         if (!user) {

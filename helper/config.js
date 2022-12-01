@@ -1,6 +1,8 @@
-
+require('dotenv').config()
 module.exports = {
-    mongoURL: 'mongodb://127.0.0.1:27017/MyCollection',
-    secretKey:process.env.JWT_SECRET
+    mongoURL: process.env.MONGO_URL,
+    secretKey:process.env.JWT_SECRET,
+    PORT:process.env.PORT,
+    sengridKey:process.env.SENDGRID_API
    
 }

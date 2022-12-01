@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
     "test": "env-cmd ./config/test.env jest --watch --runInBand",
     "coverage": "jest --coverage"
   },
@@ -16,16 +16,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "@sendgrid/mail": "^6.3.1",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
+    "loglevel": "^1.8.1",
     "mongodb": "^3.1.10",
-    "@hapi/joi": "^17.1.1",
     "mongoose": "^5.3.16",
-    "multer": "^1.4.1",
-    "sharp": "^0.31.2",
     "validator": "^10.9.0"
   },
   "devDependencies": {

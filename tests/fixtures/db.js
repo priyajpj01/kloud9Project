@@ -3,16 +3,19 @@ const jwt = require('jsonwebtoken')
 const User = require('../../models/user')
 const Task =require('../../models/task')
 
-const userOneId = new mongoose.Types.ObjectId()
+const userOneId = new mongoose.Types.ObjectId();
+console.log(userOneId);
 const userOne = {
-    _id: userOneId,
-    name: 'Karan',
-    email: 'karan@example.com',
-    password: '56what!!',
-    tokens: [{
-        token: jwt.sign({ _id: userOneId }, process.env.JWT_SECRET)
-    }]
-}
+  _id: userOneId,
+  name: "Karan",
+  email: "kp@example.com",
+  password: "56what!!",
+  tokens: [
+    {
+      token: jwt.sign({ _id: userOneId }, "Mynewproject"),
+    },
+  ],
+};
 
 const taskOne = {
     _id: new mongoose.Types.ObjectId(),
