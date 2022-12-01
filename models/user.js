@@ -59,16 +59,6 @@ const userSchema = new mongoose.Schema({
 //     foreignField: 'owner'
 // })
 
-// userSchema.methods.toJSON = function () {
-//     const user = this
-//     const userObject = user.toObject()
-
-//     delete userObject.password
-//     delete userObject.tokens
-//     delete userObject.avatar
-
-//     return userObject
-// }
 
 userSchema.methods.generateAuthToken = async function () {
     const user = this
@@ -92,11 +82,11 @@ userSchema.pre('save', async function (next) {
 })
 
 // Delete user tasks when user is removed
-// userSchema.pre('remove', async function (next) {
-//     const user = this
-//     await Task.deleteMany({ owner: user._id })
-//     next()
-// })
+userSchema.pre('remove', async function (next) {
+    const user = this
+    await Task.deleteMany({ owner: user._id })
+    next()
+})
 
 const User = mongoose.model('User', userSchema)
 
