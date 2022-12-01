@@ -49,9 +49,7 @@ return validation;
         "string.max":`Please enter {{#label}} whose length must not be more than 30 characters long.`,
         "string.base": `{{#label}} should not contain numbers.`
       }),
-      age:Joi.number().required().label('Age').messages({
-        "number.empty": '{{#label}} cannot be an empty field.',
-        "any.required": '{{#label}} is a required field.',
+      age:Joi.number().label('Age').messages({
         "number.base": '{{#label}} should be in numbers.'
       })
   
