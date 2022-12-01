@@ -7,6 +7,33 @@ beforeEach(setupDatabase);
 
 // Test cases without mocking library
 
+describe("/POST/createUser", () => {
+  test("Shloud give error when the fields is missing", async () => {
+    await request(app)
+      .post("/users/signup")
+      .send({
+        email: userOne.email,
+        password: userOne.password,
+      })
+      .expect(400);
+  });
+
+  test("Should not create a user with duplicate email", async () => {
+    const body={
+      email: userOne.email,
+      password: userOne.password,
+      name:userOne.name
+    }
+    const response=await request(app)
+      .post("/users/signup")
+      .send(body);
+      expect(400)
+      expect(response.text).toBe(" A user with email "+body.email+" already exists")
+    
+  });
+});
+
+
 describe("/GET/getUser", () => {
   test("Should login existing user", async () => {
     const response = await request(app)
@@ -19,6 +46,18 @@ describe("/GET/getUser", () => {
     const user = await User.findById(userOneId);
     expect(response.body.user.tokens[0].token).toBe(user.tokens[0].token);
   });
+
+  test("Should not login with wrong password", async () => {
+    const response = await request(app)
+      .post("/users/login")
+      .send({
+        email: userOne.email,
+        password: "wrong_pass",
+      })
+      .expect(400);
+      expect(response.text).toBe("Please enter valid password, password does not match")
+  });
+
 
   test("Should not login nonexistent user", async () => {
     await request(app)

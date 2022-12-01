@@ -25,7 +25,6 @@ router.post("/users/signup", async (req, res) => {
 
   try {
     var user = await userController.createUsers(req.body);
-    console.log("User is " + user);
     const token = await user.generateAuthToken();
 
     res.status(201).send({
@@ -64,7 +63,6 @@ router.post("/users/login", async (req, res) => {
 });
 
 router.patch("/users/update", auth, async (req, res) => {
- log.warn("Inside update api")
   var failedUpdates = [];
   const updates = Object.keys(req.body);
   const allowedUpdates = ["name", "email", "password", "age"];

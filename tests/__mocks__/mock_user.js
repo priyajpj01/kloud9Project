@@ -10,7 +10,7 @@ const User = require("../../models/user");
 // beforeEach(setupDatabase)
 describe("/POST/createUesr", () => {
   describe("when the name,age,email and password is passed to save", () => {
-    test("Should not create a user with duplicate email", async () => {
+    test("Should not create a user with duplicate email and throw error", async () => {
       const body = {
         name: "priya",
         age: 0,
