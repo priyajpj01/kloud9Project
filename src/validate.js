@@ -58,6 +58,24 @@ return validation;
   const validation = schema.validate(data);
   return validation;
     };
+
+    const createTaskValidation = (data) => {
+ 
+      const schema=Joi.object(
+        {
+        description:Joi.string().min(20).max(300).label('Description').required().messages({
+          "string.empty": `{{#label}} cannot be an empty field.`,
+          "any.required": `{{#label}} is a required field.`,
+          "string.min": `Please enter {{#label}} which should be at least 20 characters long.`,
+          "string.max":`Please enter {{#label}} whose length must not be more than 300 characters long.`,
+          "string.base": `{{#label}} should be a type of 'text'.`
+        })
+        }
+    ).options({ abortEarly: false , errors :{wrap:{label:'``'}}})
+    const validation = schema.validate(data);
+    return validation;
+      };
+       
    
 
     
@@ -66,5 +84,7 @@ return validation;
 
 module.exports.loginValidation = loginValidation;
 module.exports.registerValidation = registerValidation;
+module.exports.createTaskValidation = createTaskValidation;
+
 
 
