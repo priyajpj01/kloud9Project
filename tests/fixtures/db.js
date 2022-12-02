@@ -18,27 +18,54 @@ const userOne = {
   ],
 };
 
+const userTwoId = new mongoose.Types.ObjectId();
+
+const userTwo = {
+  _id: userTwoId,
+  name: "priya",
+  email: "priya@gmail.com",
+  password: "priya@123",
+  tokens: [
+    {
+      token: jwt.sign({ _id: userTwoId }, config.secretKey),
+    },
+  ],
+};
+
 const taskOne = {
     _id: new mongoose.Types.ObjectId(),
     description: 'First task',
     completed: false,
     owner: userOne._id
 }
-const taskOneId =taskOne._id;
 
+const taskTwo = {
+  _id: new mongoose.Types.ObjectId(),
+  description: 'Second task',
+  completed: false,
+  owner: userOne._id
+}
+const taskOneId =taskOne._id;
+const taskTwoId =taskTwo._id;
 
 const setupDatabase = async () => {
     await User.deleteMany()
     await Task.deleteMany()
     await new User(userOne).save()
+    await new User(userTwo).save()
     await new Task(taskOne).save()
+    await new Task(taskTwo).save()
   
 }
 
 module.exports = {
     userOneId,
     userOne,
+    userTwoId,
+    userTwo,
     taskOne,
+    taskTwo,
+    taskTwoId,
     taskOneId,
     setupDatabase
 }

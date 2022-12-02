@@ -9,7 +9,8 @@ const router = new express.Router()
 const validateInput = require("../src/validate");
 
 
-router.post('/createTasks', auth, async (req, res) => {
+router.post('/createTasks',auth, async (req, res) => {
+    console.log("Inside create task")
     const response= validateInput.createTaskValidation(req.body);
 
      //check Validation
@@ -21,17 +22,7 @@ router.post('/createTasks', auth, async (req, res) => {
          return res.status(400).json(res_arr)
      
      } 
-
-    console.log(req.body);
-    // const task = new Task({
-    //     ...req.body,
-    //     owner: req.user._id
-    // })
-
     try {
-        
-        // await task.save()
-        // res.status(201).send(task)
         var task = await taskController.createTask({
             ...req.body,
             owner: req.user._id
@@ -94,6 +85,9 @@ router.delete('/tasks/:id', auth, async (req, res) => {
 
    
 })
+// GET /tasks?completed=true
+// GET /tasks?limit=10&skip=20
+// GET /tasks?sortBy=createdAt:desc
 
 router.get('/tasks', auth, async (req, res) => {
     const match = {}

@@ -63,6 +63,7 @@ router.post("/users/login", async (req, res) => {
 });
 
 router.patch("/users/update", auth, async (req, res) => {
+  log.warn("Inside patch request")
   var failedUpdates = [];
   const updates = Object.keys(req.body);
   const allowedUpdates = ["name", "email", "password", "age"];
