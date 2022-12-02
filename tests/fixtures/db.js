@@ -32,6 +32,14 @@ const userTwo = {
   ],
 };
 
+
+
+const userThree = {
+  name: "test",
+  email: "test@gmail.com",
+  password: "test@123"
+};
+
 const taskOne = {
     _id: new mongoose.Types.ObjectId(),
     description: 'First task',
@@ -63,6 +71,7 @@ module.exports = {
     userOne,
     userTwoId,
     userTwo,
+    userThree,
     taskOne,
     taskTwo,
     taskTwoId,

@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("../src/app");
 const User = require("../models/user");
-const { userOneId, userOne, setupDatabase } = require("./fixtures/db");
+const { userOneId, userOne, setupDatabase, userThree } = require("./fixtures/db");
 
 beforeEach(setupDatabase);
 
@@ -31,8 +31,23 @@ describe("/POST/createUser", () => {
       expect(response.text).toBe(" A user with email "+body.email+" already exists")
     
   });
+
+  
+  test.only("Should not create a user with correct details", async () => {
+    const body={
+      email: userThree.email,
+      password: userThree.password,
+      name:userThree.name
+    }
+    const response=await request(app)
+      .post("/users/signup")
+      .send(body);
+      expect(201)
+    
+  });
 });
 
+//--------------------------------------------------------------------------------------------------------
 
 describe("/GET/getUser", () => {
   test("Should login existing user", async () => {
