@@ -3,6 +3,7 @@ const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const dotenv=require('dotenv')
+const config=require('../helper/config')
 dotenv.config()
 // const Task = require('./task')
 
@@ -62,8 +63,7 @@ userSchema.virtual('tasks', {
 
 userSchema.methods.generateAuthToken = async function () {
     const user = this
-    console.log(process.env.JWT_SECRET)
-    const token = jwt.sign({ _id: user._id.toString() },"Mynewproject")
+    const token = jwt.sign({ _id: user._id.toString() },config.secretKey)
     user.tokens = user.tokens.concat({ token })
     await user.save()
     return token
