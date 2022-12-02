@@ -41,7 +41,7 @@ const { userOneId, userOne,taskOne,taskOneId, setupDatabase } = require('./fixtu
 //   });
 
 
-test('Should create task for user', async () => {
+test.only('Should create task for user', async () => {
     const response = await request(app)
         .post('/tasks')
         .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
