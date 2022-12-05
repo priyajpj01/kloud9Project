@@ -8,7 +8,7 @@ const userOneId = new mongoose.Types.ObjectId();
 console.log(userOneId);
 const userOne = {
   _id: userOneId,
-  name: "shrabanti1",
+  name: "shrabanti",
   email: "shrabanti@gmail.com",
   password: "shrabanti@123",
   tokens: [
@@ -43,8 +43,16 @@ const taskTwo = {
   _id: new mongoose.Types.ObjectId(),
   description: 'Second task',
   completed: false,
-  owner: userOne._id
+  owner: userTwo._id
 }
+
+const taskThree = {
+    _id: new mongoose.Types.ObjectId(),
+    description: 'Third task',
+    completed: false,
+    owner: userOne._id
+  }
+
 const taskOneId =taskOne._id;
 const taskTwoId =taskTwo._id;
 
@@ -55,6 +63,7 @@ const setupDatabase = async () => {
     await new User(userTwo).save()
     await new Task(taskOne).save()
     await new Task(taskTwo).save()
+    await new Task(taskThree).save()
   
 }
 
